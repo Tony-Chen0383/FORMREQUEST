@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0f172a" />
-  <title>外籍紙本申請書申請工具 V1.4.6</title>
+  <title>外籍紙本申請書申請工具 V1.4.7</title>
   <style>
     :root{
       --bg:#f3f6fb;
@@ -134,7 +134,7 @@
           <p>門市請依實際需求填寫申請張數</p>
         </div>
       </div>
-      <div class="version">V1.4.6</div>
+      <div class="version">V1.4.7</div>
     </header>
 
     <section class="panel">
@@ -267,7 +267,7 @@
     </section>
 
     <div class="footer">
-      Smart mobile｜V1.4.6　<a href="admin.html" style="color:#8a93a3;text-decoration:none">管理入口</a>
+      Smart mobile｜V1.4.7　<a href="admin.html" style="color:#8a93a3;text-decoration:none">管理入口</a>
     </div>
   </main>
 
@@ -381,12 +381,7 @@
 
     try{
       const payload = {action:"submit",store,note,qty,total};
-      const res = await fetch(API_URL,{
-        method:"POST",
-        headers:{"Content-Type":"text/plain;charset=utf-8"},
-        body:JSON.stringify(payload)
-      });
-      const data = await res.json();
+      const data = await postJsonSafe(payload, SUBMIT_TIMEOUT_MS);
       if(!data.ok) throw new Error(data.message || "送出失敗");
 
       const lines = langKeys.filter(k=>qty[k]>0)
@@ -409,6 +404,79 @@
 
   updateTotal();
   loadStock();
+
+const SUBMIT_TIMEOUT_MS = 25000;
+
+async function postJsonSafe(payload, timeoutMs = SUBMIT_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      redirect: "follow",
+      mode: "cors",
+      cache: "no-store",
+      credentials: "omit",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+
+    const text = await res.text();
+
+    if (!res.ok) {
+      throw new Error("後台服務 HTTP 錯誤：" + res.status);
+    }
+
+    try {
+      return JSON.parse(text);
+    } catch (_) {
+      const normalized = text.trim().toLowerCase();
+
+      if (
+        normalized.startsWith("<!doctype") ||
+        normalized.startsWith("<html") ||
+        normalized.includes("<body")
+      ) {
+        if (
+          normalized.includes("accounts.google.com") ||
+          normalized.includes("sign in") ||
+          normalized.includes("登入")
+        ) {
+          throw new Error("送出失敗：Apps Script 回傳 Google 登入頁，請確認 Web App 存取權限為「任何人」。");
+        }
+
+        if (
+          normalized.includes("permission") ||
+          normalized.includes("權限") ||
+          normalized.includes("access denied")
+        ) {
+          throw new Error("送出失敗：Apps Script 回傳權限頁，請確認執行身分為「我」、存取權限為「任何人」。");
+        }
+
+        throw new Error("送出失敗：Apps Script 回傳 HTML 而不是 JSON，請確認目前 /exec 對應最新部署版本。");
+      }
+
+      throw new Error("送出失敗：後台回傳格式異常。");
+    }
+  } catch (err) {
+    if (err.name === "AbortError") {
+      throw new Error("送出逾時：Google Apps Script 可能正在冷啟動，請稍後再試。");
+    }
+
+    if (err instanceof TypeError) {
+      throw new Error("送出失敗：無法連線 Apps Script，請確認網路與 Web App 部署設定。");
+    }
+
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 </script>
 </body>
 </html>
