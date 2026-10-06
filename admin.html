@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>營運管理後台 V1.4.5</title>
+<title>營運管理後台 V1.4.6</title>
 <style>
 :root{--bg:#f3f6fb;--panel:#fff;--text:#172033;--muted:#6b7280;--line:#e5e7eb;--primary:#0f5bd8;--primary-dark:#0a49b4;--success:#0f9d58;--danger:#d93025;--shadow:0 10px 30px rgba(18,38,63,.08);--radius:18px}
 *{box-sizing:border-box}
@@ -48,7 +48,7 @@ td.note{text-align:left;max-width:260px}
 <div class="wrap">
   <div id="loginView" class="panel login">
     <h1>營運管理後台</h1>
-    <div class="sub">外籍紙本申請書申請工具 V1.4.5</div>
+    <div class="sub">外籍紙本申請書申請工具 V1.4.6</div>
     <div style="height:20px"></div>
     <label for="password">管理密碼</label>
     <input id="password" type="password" autocomplete="current-password" placeholder="請輸入管理密碼">
@@ -63,7 +63,7 @@ td.note{text-align:left;max-width:260px}
         <div class="sub">庫存管理 × 申請紀錄</div>
       </div>
       <div>
-        <span class="badge">V1.4.5</span>
+        <span class="badge">V1.4.6</span>
         <a href="./" class="btn btn-light" style="margin-left:8px;text-decoration:none;display:inline-block">前往申請頁</a>
         <button id="logoutBtn" class="btn btn-light" style="margin-left:8px">登出</button>
       </div>
@@ -207,7 +207,7 @@ async function login(){
   showStatus('loginStatus','info','正在驗證管理密碼…');
 
   try{
-    // V1.4.5: login ONLY authenticates and returns token.
+    // V1.4.6: login ONLY authenticates and returns token.
     const data=await postJson({action:"admin_login",password},LOGIN_TIMEOUT_MS);
     if(!data.ok) throw new Error(data.message||'登入失敗');
 
