@@ -3,56 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>營運管理後台 V1.4.1</title>
+<title>營運管理後台 V1.4.2</title>
 <style>
-:root{
-  --bg:#f3f6fb;--panel:#fff;--text:#172033;--muted:#6b7280;--line:#e5e7eb;
-  --primary:#0f5bd8;--primary-dark:#0a49b4;--success:#0f9d58;--danger:#d93025;
-  --shadow:0 10px 30px rgba(18,38,63,.08);--radius:18px
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text)}
-.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 50px}
-.header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}
-h1{margin:0;font-size:28px}
-.sub{color:var(--muted);font-size:14px;margin-top:5px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:18px}
-.login{max-width:460px;margin:70px auto}
-label{display:block;font-weight:700;margin:0 0 8px}
-input,select{width:100%;padding:13px 14px;border:1px solid #d7dce3;border-radius:12px;font-size:15px;outline:none}
-input:focus,select:focus{border-color:#78a9ff;box-shadow:0 0 0 4px rgba(15,91,216,.09)}
-.btn{border:0;border-radius:12px;padding:13px 16px;font-size:15px;font-weight:800;cursor:pointer}
-.btn-primary{background:var(--primary);color:white}
-.btn-primary:hover{background:var(--primary-dark)}
-.btn-light{background:#eef1f5;color:#374151}
-.row{display:flex;gap:12px;align-items:end}
-.row>*{flex:1}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.card{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}
-.card .name{font-weight:800;font-size:16px;margin-bottom:6px}
-.card .stock{font-size:28px;font-weight:900;color:var(--primary);margin:10px 0}
-.card .small{font-size:12px;color:var(--muted)}
-.card input{text-align:center;font-size:18px;font-weight:800}
-.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{border-bottom:1px solid var(--line);padding:11px 10px;text-align:center}
-th{background:#f7f9fc;font-weight:800;position:sticky;top:0}
-td.note{text-align:left;max-width:260px}
-.table-wrap{max-height:480px;overflow:auto;border:1px solid var(--line);border-radius:14px}
-.hidden{display:none!important}
-.status{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:14px;display:none}
-.status.ok{display:block;background:#edf9f2;color:#176a3a}
-.status.err{display:block;background:#fff1f0;color:#a1261d}
-.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef3fb;color:#0f5bd8;font-size:12px;font-weight:800}
-@media(max-width:850px){.cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.cards{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}h1{font-size:23px}}
+:root{--bg:#f3f6fb;--panel:#fff;--text:#172033;--muted:#6b7280;--line:#e5e7eb;--primary:#0f5bd8;--primary-dark:#0a49b4;--success:#0f9d58;--danger:#d93025;--shadow:0 10px 30px rgba(18,38,63,.08);--radius:18px}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 50px} .header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}
+h1{margin:0;font-size:28px} .sub{color:var(--muted);font-size:14px;margin-top:5px} .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:18px}
+.login{max-width:460px;margin:70px auto} label{display:block;font-weight:700;margin:0 0 8px} input,select{width:100%;padding:13px 14px;border:1px solid #d7dce3;border-radius:12px;font-size:15px;outline:none}
+input:focus,select:focus{border-color:#78a9ff;box-shadow:0 0 0 4px rgba(15,91,216,.09)} .btn{border:0;border-radius:12px;padding:13px 16px;font-size:15px;font-weight:800;cursor:pointer}
+.btn-primary{background:var(--primary);color:#fff} .btn-primary:hover{background:var(--primary-dark)} .btn-light{background:#eef1f5;color:#374151} .btn:disabled{opacity:.6;cursor:not-allowed}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px} .card{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}
+.card .name{font-weight:800;font-size:16px;margin-bottom:6px} .card .stock{font-size:28px;font-weight:900;color:var(--primary);margin:10px 0} .card input{text-align:center;font-size:18px;font-weight:800}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap} table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:11px 10px;text-align:center} th{background:#f7f9fc;font-weight:800;position:sticky;top:0} td.note{text-align:left;max-width:260px}
+.table-wrap{max-height:480px;overflow:auto;border:1px solid var(--line);border-radius:14px} .hidden{display:none!important}
+.status{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:14px;display:none} .status.ok{display:block;background:#edf9f2;color:#176a3a} .status.err{display:block;background:#fff1f0;color:#a1261d}
+.status.info{display:block;background:#eef4ff;color:#315a9b} .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef3fb;color:#0f5bd8;font-size:12px;font-weight:800}
+@media(max-width:850px){.cards{grid-template-columns:repeat(2,1fr)}} @media(max-width:560px){.cards{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div id="loginView" class="panel login">
     <h1>營運管理後台</h1>
-    <div class="sub">外籍紙本申請書申請工具 V1.4.1</div>
+    <div class="sub">外籍紙本申請書申請工具 V1.4.2</div>
     <div style="height:20px"></div>
     <label for="password">管理密碼</label>
     <input id="password" type="password" autocomplete="current-password" placeholder="請輸入管理密碼">
@@ -62,28 +36,15 @@ td.note{text-align:left;max-width:260px}
 
   <div id="adminView" class="hidden">
     <div class="header">
-      <div>
-        <h1>營運管理後台</h1>
-        <div class="sub">庫存管理 × 申請紀錄</div>
-      </div>
-      <div>
-        <span class="badge">V1.4.1</span>
-        <button id="logoutBtn" class="btn btn-light" style="margin-left:8px">登出</button>
-      </div>
+      <div><h1>營運管理後台</h1><div class="sub">庫存管理 × 申請紀錄</div></div>
+      <div><span class="badge">V1.4.2</span><button id="logoutBtn" class="btn btn-light" style="margin-left:8px">登出</button></div>
     </div>
 
     <section class="panel">
       <div class="toolbar">
-        <div>
-          <div style="font-size:19px;font-weight:900">目前庫存</div>
-          <div class="sub">修改後按「儲存庫存」即可寫回 Google Sheet</div>
-        </div>
-        <div>
-          <button id="refreshBtn" class="btn btn-light">重新整理</button>
-          <button id="saveStockBtn" class="btn btn-primary">儲存庫存</button>
-        </div>
+        <div><div style="font-size:19px;font-weight:900">目前庫存</div><div class="sub">修改後按「儲存庫存」即可寫回 Google Sheet</div></div>
+        <div><button id="refreshBtn" class="btn btn-light">重新整理</button><button id="saveStockBtn" class="btn btn-primary">儲存庫存</button></div>
       </div>
-
       <div class="cards">
         <div class="card"><div class="name">🇮🇩 印尼文</div><div class="stock" id="display-id">0</div><input id="stock-id" type="number" min="0" step="1"></div>
         <div class="card"><div class="name">🇵🇭 菲律賓 / 英文</div><div class="stock" id="display-ph">0</div><input id="stock-ph" type="number" min="0" step="1"></div>
@@ -95,25 +56,11 @@ td.note{text-align:left;max-width:260px}
 
     <section class="panel">
       <div class="toolbar">
-        <div>
-          <div style="font-size:19px;font-weight:900">申請紀錄</div>
-          <div class="sub">顯示最近 200 筆，可依門市篩選</div>
-        </div>
-        <div style="min-width:220px">
-          <select id="storeFilter">
-            <option value="">全部門市</option>
-          </select>
-        </div>
+        <div><div style="font-size:19px;font-weight:900">申請紀錄</div><div class="sub">顯示最近 200 筆，可依門市篩選</div></div>
+        <div style="min-width:220px"><select id="storeFilter"><option value="">全部門市</option></select></div>
       </div>
       <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>申請時間</th><th>門市</th><th>印尼</th><th>菲律賓/英文</th><th>泰文</th><th>越南文</th><th>總張數</th><th>備註</th>
-            </tr>
-          </thead>
-          <tbody id="requestRows"></tbody>
-        </table>
+        <table><thead><tr><th>申請時間</th><th>門市</th><th>印尼</th><th>菲律賓/英文</th><th>泰文</th><th>越南文</th><th>總張數</th><th>備註</th></tr></thead><tbody id="requestRows"></tbody></table>
       </div>
       <div id="requestStatus" class="status"></div>
     </section>
@@ -122,45 +69,81 @@ td.note{text-align:left;max-width:260px}
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzV63nmCEnvD4InnB4SfFDdoVpr9Hr2bibZbcpz5WnJof-kAPu4fy2k4a3BraRI5zv44g/exec";
+const REQUEST_TIMEOUT_MS = 12000;
 let adminToken = "";
 let allRequests = [];
 
 function showStatus(id,type,msg){
   const el=document.getElementById(id);
-  el.className='status '+(type==='ok'?'ok':'err');
+  el.className='status '+type;
   el.textContent=msg;
 }
-function clearStatus(id){document.getElementById(id).className='status';}
+function clearStatus(id){document.getElementById(id).className='status'}
+
+async function postJson(payload, timeoutMs=REQUEST_TIMEOUT_MS){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(), timeoutMs);
+  try{
+    const res=await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(payload),
+      signal:controller.signal
+    });
+    const text=await res.text();
+    let data;
+    try{ data=JSON.parse(text); }
+    catch{ throw new Error("後台服務回傳格式異常，請確認 Apps Script 部署版本"); }
+    return data;
+  }catch(err){
+    if(err.name==='AbortError') throw new Error("連線逾時，請稍後再試或重新整理頁面");
+    throw err;
+  }finally{
+    clearTimeout(timer);
+  }
+}
 
 async function api(action, body={}){
-  const payload={action, token:adminToken, ...body};
-  const res=await fetch(API_URL,{
-    method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify(payload)
+  return postJson({action,token:adminToken,...body});
+}
+
+function applyStock(stock){
+  ['id','ph','th','vn'].forEach(k=>{
+    const v=Number(stock?.[k]||0);
+    document.getElementById('display-'+k).textContent=v.toLocaleString('zh-TW');
+    document.getElementById('stock-'+k).value=v;
   });
-  return await res.json();
+}
+
+function applyRequests(requests){
+  allRequests=requests||[];
+  buildStoreFilter();
+  renderRequests();
 }
 
 async function login(){
   clearStatus('loginStatus');
   const password=document.getElementById('password').value;
   if(!password) return showStatus('loginStatus','err','請輸入管理密碼');
+
   const btn=document.getElementById('loginBtn');
   btn.disabled=true; btn.textContent='登入中…';
+  showStatus('loginStatus','info','正在連線 Google Apps Script，首次啟動可能需要幾秒…');
+
   try{
-    const res=await fetch(API_URL,{
-      method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({action:"admin_login",password})
-    });
-    const data=await res.json();
+    const data=await postJson({action:"admin_login",password,include_bootstrap:true,limit:200},15000);
     if(!data.ok) throw new Error(data.message||'登入失敗');
+
     adminToken=data.token;
     sessionStorage.setItem('adminToken',adminToken);
+
     document.getElementById('loginView').classList.add('hidden');
     document.getElementById('adminView').classList.remove('hidden');
-    await refreshAll();
+
+    if(data.stock) applyStock(data.stock);
+    if(data.requests) applyRequests(data.requests);
+
+    if(!data.stock || !data.requests) await refreshAll();
   }catch(err){
     showStatus('loginStatus','err',err.message);
   }finally{
@@ -169,19 +152,12 @@ async function login(){
 }
 
 async function refreshAll(){
-  await Promise.all([loadStock(),loadRequests()]);
-}
-
-async function loadStock(){
-  clearStatus('stockStatus');
+  clearStatus('stockStatus'); clearStatus('requestStatus');
   try{
-    const data=await api('admin_get_stock');
-    if(!data.ok) throw new Error(data.message||'庫存讀取失敗');
-    ['id','ph','th','vn'].forEach(k=>{
-      const v=Number(data.stock?.[k]||0);
-      document.getElementById('display-'+k).textContent=v.toLocaleString('zh-TW');
-      document.getElementById('stock-'+k).value=v;
-    });
+    const data=await api('admin_bootstrap',{limit:200});
+    if(!data.ok) throw new Error(data.message||'資料讀取失敗');
+    applyStock(data.stock);
+    applyRequests(data.requests);
   }catch(err){
     showStatus('stockStatus','err',err.message);
   }
@@ -196,25 +172,12 @@ async function saveStock(){
   try{
     const data=await api('admin_update_stock',{stock});
     if(!data.ok) throw new Error(data.message||'儲存失敗');
+    applyStock(data.stock);
     showStatus('stockStatus','ok','庫存已更新');
-    await loadStock();
   }catch(err){
     showStatus('stockStatus','err',err.message);
   }finally{
     btn.disabled=false; btn.textContent='儲存庫存';
-  }
-}
-
-async function loadRequests(){
-  clearStatus('requestStatus');
-  try{
-    const data=await api('admin_get_requests',{limit:200});
-    if(!data.ok) throw new Error(data.message||'申請紀錄讀取失敗');
-    allRequests=data.requests||[];
-    buildStoreFilter();
-    renderRequests();
-  }catch(err){
-    showStatus('requestStatus','err',err.message);
   }
 }
 
@@ -229,18 +192,8 @@ function buildStoreFilter(){
 function renderRequests(){
   const filter=document.getElementById('storeFilter').value;
   const rows=filter?allRequests.filter(r=>r.store===filter):allRequests;
-  const tbody=document.getElementById('requestRows');
-  tbody.innerHTML=rows.map(r=>`
-    <tr>
-      <td>${escapeHtml(r.time||'')}</td>
-      <td>${escapeHtml(r.store||'')}</td>
-      <td>${num(r.id)}</td>
-      <td>${num(r.ph)}</td>
-      <td>${num(r.th)}</td>
-      <td>${num(r.vn)}</td>
-      <td><strong>${num(r.total)}</strong></td>
-      <td class="note">${escapeHtml(r.note||'')}</td>
-    </tr>`).join('');
+  document.getElementById('requestRows').innerHTML=rows.map(r=>`
+  <tr><td>${escapeHtml(r.time||'')}</td><td>${escapeHtml(r.store||'')}</td><td>${num(r.id)}</td><td>${num(r.ph)}</td><td>${num(r.th)}</td><td>${num(r.vn)}</td><td><strong>${num(r.total)}</strong></td><td class="note">${escapeHtml(r.note||'')}</td></tr>`).join('');
 }
 
 function num(v){return Number(v||0).toLocaleString('zh-TW')}
@@ -252,8 +205,7 @@ document.getElementById('saveStockBtn').addEventListener('click',saveStock);
 document.getElementById('refreshBtn').addEventListener('click',refreshAll);
 document.getElementById('storeFilter').addEventListener('change',renderRequests);
 document.getElementById('logoutBtn').addEventListener('click',()=>{
-  sessionStorage.removeItem('adminToken');
-  adminToken='';
+  sessionStorage.removeItem('adminToken'); adminToken='';
   document.getElementById('adminView').classList.add('hidden');
   document.getElementById('loginView').classList.remove('hidden');
   document.getElementById('password').value='';
@@ -261,19 +213,16 @@ document.getElementById('logoutBtn').addEventListener('click',()=>{
 
 (async()=>{
   const saved=sessionStorage.getItem('adminToken');
-  if(saved){
-    adminToken=saved;
-    try{
-      const data=await api('admin_get_stock');
-      if(data.ok){
-        document.getElementById('loginView').classList.add('hidden');
-        document.getElementById('adminView').classList.remove('hidden');
-        await refreshAll();
-      } else {
-        sessionStorage.removeItem('adminToken');
-        adminToken='';
-      }
-    }catch(e){}
+  if(!saved) return;
+  adminToken=saved;
+  try{
+    const data=await api('admin_bootstrap',{limit:200});
+    if(!data.ok) throw new Error();
+    document.getElementById('loginView').classList.add('hidden');
+    document.getElementById('adminView').classList.remove('hidden');
+    applyStock(data.stock); applyRequests(data.requests);
+  }catch(e){
+    sessionStorage.removeItem('adminToken'); adminToken='';
   }
 })();
 </script>
