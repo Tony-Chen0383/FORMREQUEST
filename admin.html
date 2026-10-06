@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>營運管理後台 V1.4.2</title>
+<title>營運管理後台 V1.4.3</title>
 <style>
 :root{--bg:#f3f6fb;--panel:#fff;--text:#172033;--muted:#6b7280;--line:#e5e7eb;--primary:#0f5bd8;--primary-dark:#0a49b4;--success:#0f9d58;--danger:#d93025;--shadow:0 10px 30px rgba(18,38,63,.08);--radius:18px}
 *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text)}
@@ -26,7 +26,7 @@ th,td{border-bottom:1px solid var(--line);padding:11px 10px;text-align:center} t
 <div class="wrap">
   <div id="loginView" class="panel login">
     <h1>營運管理後台</h1>
-    <div class="sub">外籍紙本申請書申請工具 V1.4.2</div>
+    <div class="sub">外籍紙本申請書申請工具 V1.4.3</div>
     <div style="height:20px"></div>
     <label for="password">管理密碼</label>
     <input id="password" type="password" autocomplete="current-password" placeholder="請輸入管理密碼">
@@ -37,7 +37,7 @@ th,td{border-bottom:1px solid var(--line);padding:11px 10px;text-align:center} t
   <div id="adminView" class="hidden">
     <div class="header">
       <div><h1>營運管理後台</h1><div class="sub">庫存管理 × 申請紀錄</div></div>
-      <div><span class="badge">V1.4.2</span><button id="logoutBtn" class="btn btn-light" style="margin-left:8px">登出</button></div>
+      <div><span class="badge">V1.4.3</span><button id="logoutBtn" class="btn btn-light" style="margin-left:8px">登出</button></div>
     </div>
 
     <section class="panel">
@@ -83,20 +83,69 @@ function clearStatus(id){document.getElementById(id).className='status'}
 async function postJson(payload, timeoutMs=REQUEST_TIMEOUT_MS){
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(), timeoutMs);
+
   try{
     const res=await fetch(API_URL,{
       method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      redirect:"follow",
+      mode:"cors",
+      cache:"no-store",
+      credentials:"omit",
+      headers:{
+        "Content-Type":"text/plain;charset=utf-8"
+      },
       body:JSON.stringify(payload),
       signal:controller.signal
     });
+
+    const contentType=(res.headers.get("content-type")||"").toLowerCase();
     const text=await res.text();
-    let data;
-    try{ data=JSON.parse(text); }
-    catch{ throw new Error("後台服務回傳格式異常，請確認 Apps Script 部署版本"); }
-    return data;
+
+    if(!res.ok){
+      throw new Error("後台服務 HTTP 錯誤："+res.status);
+    }
+
+    try{
+      return JSON.parse(text);
+    }catch(parseErr){
+      const normalized=text.trim().toLowerCase();
+
+      if(normalized.startsWith("<!doctype") || normalized.startsWith("<html") || normalized.includes("<body")){
+        if(normalized.includes("accounts.google.com") ||
+           normalized.includes("sign in") ||
+           normalized.includes("登入") ||
+           normalized.includes("identifier")){
+          throw new Error("Apps Script 回傳 Google 登入頁。請將 Web App 的「誰可以存取」設為「任何人」，並重新部署新版本。");
+        }
+
+        if(normalized.includes("authorization") ||
+           normalized.includes("permission") ||
+           normalized.includes("權限") ||
+           normalized.includes("access denied")){
+          throw new Error("Apps Script 回傳權限頁。請確認執行身分為「我」、存取權限為「任何人」，並重新部署。");
+        }
+
+        if(normalized.includes("script.google") ||
+           normalized.includes("google apps script") ||
+           normalized.includes("application error") ||
+           normalized.includes("exception")){
+          throw new Error("Apps Script 執行時回傳錯誤頁。請到 Apps Script「執行作業」查看最新錯誤紀錄。");
+        }
+
+        throw new Error("Apps Script 回傳 HTML 而不是 JSON。請確認目前 /exec 網址對應到 V1.4.3 的最新部署版本。");
+      }
+
+      throw new Error("後台服務回傳非 JSON 內容："+text.slice(0,120));
+    }
   }catch(err){
-    if(err.name==='AbortError') throw new Error("連線逾時，請稍後再試或重新整理頁面");
+    if(err.name==="AbortError"){
+      throw new Error("連線逾時，請稍後再試；若持續發生，請確認 Apps Script 已部署最新版本。");
+    }
+
+    if(err instanceof TypeError){
+      throw new Error("無法連線 Apps Script。請確認 Web App 權限為「任何人」，且 /exec 網址正確。");
+    }
+
     throw err;
   }finally{
     clearTimeout(timer);
@@ -128,7 +177,7 @@ async function login(){
 
   const btn=document.getElementById('loginBtn');
   btn.disabled=true; btn.textContent='登入中…';
-  showStatus('loginStatus','info','正在連線 Google Apps Script，首次啟動可能需要幾秒…');
+  showStatus('loginStatus','info','正在連線 Google Apps Script，首次啟動可能需要幾秒；若部署版本未更新會自動提示原因…');
 
   try{
     const data=await postJson({action:"admin_login",password,include_bootstrap:true,limit:200},15000);
